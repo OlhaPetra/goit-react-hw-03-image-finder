@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/index.css"],"names":[],"mappings":"AAAA,OACE,iBACF,CAEA,UACE,YAAa,CACb,qBAAsB,CACtB,kBACF","file":"main.e7e9274d.chunk.css","sourcesContent":[".Title {\n  text-align: center;\n}\n\n.Contacts {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n"]}
