@@ -5,9 +5,11 @@ import s from './Button.module.css';
 
 function Button({ onClickButton }) {
   return (
-    <button type="submit" onClick={onClickButton} className={s.Button}>
-      Load more
-    </button>
+    <div className={s.Section}>
+      <button type="submit" onClick={onClickButton} className={s.Button}>
+        Load more
+      </button>
+    </div>
   );
 }
 

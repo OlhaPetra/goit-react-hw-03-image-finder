@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import SearchBar from './components/Searchbar';
 import ImageGallary from './components/ImageGallery';
 import ImagesApi from './services-api/ImagesAPI';
 import Button from './components/Button';
 import Modal from './components/Modal';
+import s from './App.module.css';
 
 class App extends Component {
   state = {
@@ -27,14 +30,24 @@ class App extends Component {
 
   searchImages = e => {
     this.setState({ loading: true, images: [], page: 1 });
+
     setTimeout(() => {
       ImagesApi.ImagesFetch(this.state.searchQuery, this.state.page)
-        .then(results =>
-          this.setState({ images: results, page: this.state.page + 1 }),
-        )
+        .then(results => {
+          if (results.length > 0) {
+            return this.setState({
+              images: results,
+              page: this.state.page + 1,
+            });
+          }
+          toast.error(
+            `No results were found for your query - "${this.state.searchQuery}"!`,
+          );
+          return;
+        })
         .catch(error => this.setState({ error }))
         .finally(this.setState({ loading: false }));
-    }, 3000);
+    }, 100);
   };
 
   loadMoreImages = e => {
@@ -68,14 +81,20 @@ class App extends Component {
 
     return (
       <>
-        <div>
+        <div className={s.App}>
           <SearchBar
             onSubmit={this.handleSearchFormSubmit}
             onClick={this.searchImages}
           />
           {error && <h1>Ошибка на сервере</h1>}
           {loading && (
-            <Loader type="Oval" color="#3f51b5" height={80} width={80} />
+            <Loader
+              type="Oval"
+              color="#3f51b5"
+              height={80}
+              width={80}
+              className={s.Loader}
+            />
           )}
           {images.length > 0 && (
             <ImageGallary images={images} onClick={this.openModal} />

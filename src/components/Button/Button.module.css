@@ -1,7 +1,15 @@
 /*
 * Стили компонента Buton (Load more)
 */
+
+.Section {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
 .Button {
+  text-align: center;
   padding: 8px 16px;
   border-radius: 2px;
   background-color: #3f51b5;
