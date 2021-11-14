@@ -1,15 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
+import defaultImg from '../../img/default.jpg';
 import s from './ImageGalleryItem.module.css';
 
-class ImageGallaryItem extends Component {
-  render() {
-    return (
-      <li className={s.ImageGalleryItem}>
-        {/*  <img src="" alt="" className={s.ImageGalleryItemImage/> */}
-      </li>
-    );
-  }
-}
+const ImageGallaryItem = ({ alt, prevImg, largeImg, onClick }) => {
+  return (
+    <li className={s.ImageGalleryItem}>
+      <img
+        className={s.ImageGalleryItemImage}
+        src={prevImg ?? defaultImg}
+        alt={alt}
+        onClick={() => onClick(largeImg)}
+      />
+    </li>
+  );
+};
+
+ImageGallaryItem.propTypes = {
+  alt: PropTypes.string,
+  prevImg: PropTypes.string,
+  largeImg: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
+};
 
 export default ImageGallaryItem;

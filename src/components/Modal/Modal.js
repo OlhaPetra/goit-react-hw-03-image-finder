@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 
 import s from './Modal.module.css';
 
@@ -27,15 +28,21 @@ class Modal extends Component {
   };
 
   render() {
+    const { largeImage } = this.props;
     return createPortal(
       <div className={s.Modal__backdrop} onClick={this.handleBackdropClick}>
         <div className={s.Modal__content}>
-          <img src="" alt="" />
+          <img src={largeImage} alt="" />
         </div>
       </div>,
       modalRoot,
     );
   }
 }
+
+Modal.propTypes = {
+  largeImage: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
 export default Modal;
