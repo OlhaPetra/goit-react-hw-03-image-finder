@@ -7,36 +7,40 @@ import s from './Searchbar.module.css';
 
 class SearchBar extends Component {
   state = {
-    querry: '',
+    query: '',
   };
 
-  handleQuerryChange = event => {
-    this.setState({ querry: event.currentTarget.value.toLowerCase() });
+  handleQueryChange = event => {
+    this.setState({ query: event.currentTarget.value.toLowerCase() });
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    if (this.state.querry.trim() === '') {
+    if (this.state.query.trim() === '') {
       toast.error('Enter your request!');
       return;
     }
-    this.props.onSubmit(this.state.querry);
-    this.setState({ querry: '' });
+    this.props.onSubmit(this.state.query);
+    this.setState({ query: '' });
   };
 
   render() {
     return (
       <header className={s.Searchbar}>
         <form onSubmit={this.handleSubmit} className={s.SearchForm}>
-          <button type="submit" className={s.SearchFormButton}>
+          <button
+            type="submit"
+            onClick={this.props.onClick}
+            className={s.SearchFormButton}
+          >
             <FaSearch />
             <span className={s.SearchFormButtonLabel}>Search</span>
           </button>
 
           <input
-            name="querry"
-            value={this.state.querry}
-            onChange={this.handleQuerryChange}
+            name="query"
+            value={this.state.query}
+            onChange={this.handleQueryChange}
             className={s.SearchFormInput}
             type="text"
             autoComplete="off"

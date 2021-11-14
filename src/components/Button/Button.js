@@ -12,7 +12,7 @@ function Button({ onClickButton }) {
 }
 
 Button.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
 };
 
 export default Button;

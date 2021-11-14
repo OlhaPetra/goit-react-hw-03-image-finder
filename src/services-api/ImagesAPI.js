@@ -6,12 +6,7 @@ function ImagesFetch(searchQuery, page = 1) {
   return fetch(
     `${BASE_URL}?q=${searchQuery}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=${perPage}`,
   )
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(new Error('Ошибка на сервере'));
-    })
+    .then(response => response.json())
     .then(data => data.hits);
 }
 

@@ -11,7 +11,7 @@ const ImageGallaryItem = ({ alt, prevImg, largeImg, onClick }) => {
         className={s.ImageGalleryItemImage}
         src={prevImg ?? defaultImg}
         alt={alt}
-        onClick={() => onClick(largeImg)}
+        onClick={() => onClick(largeImg, alt)}
       />
     </li>
   );
