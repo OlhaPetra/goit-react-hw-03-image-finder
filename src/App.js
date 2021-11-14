@@ -103,9 +103,11 @@ class App extends Component {
             <Button onClickButton={this.loadMoreImages} />
           )}
           {modalImage && (
-            <Modal onClose={this.closeModal}>
-              <img src={modalImage} alt={modalAlt} />
-            </Modal>
+            <Modal
+              onClose={this.closeModal}
+              largeImage={modalImage}
+              alt={modalAlt}
+            />
           )}
           <ToastContainer />
         </div>
