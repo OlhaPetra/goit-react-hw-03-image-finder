@@ -5,17 +5,23 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import SearchBar from './components/Searchbar';
 import ImageGallary from './components/ImageGallery';
-import ImagesApi from './services-api/ImagesAPI';
-import Button from './components/Button';
-import Modal from './components/Modal';
+//import ImagesApi from './services-api/ImagesAPI';
+//import Button from './components/Button';
+//import Modal from './components/Modal';
+
+const API_KEY = `23556027-7518a6338651e19ee58531f7f`;
+const BASE_URL = `https://pixabay.com/api/`;
+const perPage = 12;
 
 class App extends Component {
   state = {
     searchQuerry: '',
-    pictures: [],
+    images: [],
     page: 1,
-    showModal: false,
     loading: false,
+    error: null,
+
+    showModal: false,
     modalImage: null,
     firstRequest: true,
   };
@@ -25,26 +31,23 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const prevQuery = prevState.searchQuery;
-    const nextQuery = this.state.searchQuery;
-
-    if (prevQuery !== nextQuery) {
-      const { searchQuerry, page } = this.state;
-
-      this.setState({
-        loading: true,
-      });
-
-      ImagesApi.ImagesFetch(searchQuerry, page)
-        .then(
-          results => console.log(results),
-          /* this.setState(prevState => ({
-              pictures: [...prevState.pictures, ...results],
-              page: prevState.page + 1,
-            })), */
+    if (prevState.searchQuerry !== this.state.searchQuerry) {
+      this.setState({ loading: true, images: [] });
+      setTimeout(() => {
+        fetch(
+          `${BASE_URL}?q=${this.state.searchQuerry}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=${perPage}`,
         )
-        .catch(error => console.log(error))
-        .finally(() => this.setState({ loading: false }));
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            return Promise.reject(new Error('Ошибка на сервере'));
+          })
+          .then(data => data.hits)
+          .then(images => this.setState({ images }))
+          .catch(error => this.setState({ error }))
+          .finally(this.setState({ loading: false }));
+      }, 3000);
     }
   }
 
@@ -57,18 +60,19 @@ class App extends Component {
   };
 
   render() {
-    const { pictures, loading, modalImage, searchQuerry } = this.state;
+    const { images, loading, error, modalImage, searchQuerry } = this.state;
 
     return (
       <>
         <div>
           <SearchBar onSubmit={this.handleSearchFormSubmit} />
-          <ImageGallary
-            pictures={pictures}
-            onClick={this.openModal}
-            searchQuerry={searchQuerry}
-          />
-          {modalImage && (
+          {error && <h1>{error.message}</h1>}
+          {loading && <div>Загружаем</div>}
+          {images.length > 0 && (
+            <ImageGallary images={images} onClick={this.openModal} />
+          )}
+
+          {/* {modalImage && (
             <Modal largeImage={modalImage} onClose={this.closeModal} />
           )}
           {loading && (
@@ -79,6 +83,7 @@ class App extends Component {
           {pictures.length > 0 && !loading && (
             <Button onClick={this.imagesRequest} />
           )}
+           */}
           <ToastContainer />
         </div>
       </>
